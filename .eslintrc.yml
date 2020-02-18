@@ -1,0 +1,243 @@
+root: true
+
+parser: "@typescript-eslint/parser"
+
+parserOptions:
+  ecmaVersion: 2019
+  sourceType: module
+#  project: tsconfig.json
+
+env:
+  es6: true
+  node: true
+  jest: true
+
+plugins:
+  - "@typescript-eslint"
+  - security  # https://github.com/nodesecurity/eslint-plugin-security
+  - import    # https://github.com/benmosher/eslint-plugin-import
+  - promise   # https://github.com/xjamundx/eslint-plugin-promise
+
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:security/recommended
+  - plugin:import/errors
+  - plugin:import/warnings
+  - plugin:import/typescript
+  - plugin:promise/recommended
+
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+
+rules:
+  # todo: add https://eslint.org/docs/rules/#stylistic-issues
+  # todo: add https://eslint.org/docs/rules/#ecmascript-6
+  # todo: add https://github.com/jest-community/eslint-plugin-jest
+  # todo: add https://github.com/BrainMaestro/eslint-plugin-optimize-regex/blob/master/docs/rules/optimize-regex.md
+  # todo: add https://github.com/mysticatea/eslint-plugin-node
+  # todo: add https://github.com/wix/eslint-plugin-lodash
+
+
+  "@typescript-eslint/member-delimiter-style":
+    - warn
+    - multiline:
+        delimiter: none
+        requireLast: false
+      singleline:
+        delimiter: semi
+        requireLast: false
+
+
+  "@typescript-eslint/ban-ts-ignore":
+    - off
+
+  "@typescript-eslint/explicit-function-return-type":
+    - off
+
+
+  "@typescript-eslint/prefer-interface": off
+
+  "@typescript-eslint/camelcase": off
+
+  "@typescript-eslint/no-unexpected-multiline": off
+
+  # disallow use of the `Buffer()` constructor
+  no-buffer-constructor:
+    - error
+
+  # disallow the use of variables before they are defined
+  "@typescript-eslint/no-use-before-define":
+    - error
+    - functions: false
+
+  strict:
+    - error
+    - never
+
+  # enforce the consistent use of the radix argument when using `parseInt()`
+  radix:
+    - error
+
+  # require using Error objects as Promise rejection reasons
+  prefer-promise-reject-errors:
+    - error
+
+  no-with:
+    - warn
+
+  # disallow `void` operators
+  "@typescript-eslint/no-void":
+    - off
+
+  # disallow redundant return statements
+  no-useless-return:
+    - error
+
+  # disallow unnecessary concatenation of literals or template literals
+  no-useless-concat:
+    - error
+
+  # disallow unnecessary calls to `.call()` and `.apply()`
+  no-useless-call:
+    - error
+
+  # disallow throwing literals as exceptions
+  no-throw-literal:
+    - error
+
+  # disallow comparisons where both sides are exactly the same
+  no-self-compare:
+    - error
+
+  no-return-await:
+    - error
+
+  no-proto:
+    - error
+
+  # disallow `new` operators with the `String`, `Number`, and `Boolean` objects
+  no-new-wrappers:
+    - error
+
+  # disallow `new` operators with the `Function` object
+  no-new-func:
+    - warn
+
+  # disallow `new` operators outside of assignments or comparisons
+  no-new:
+    - warn
+
+  no-multi-spaces:
+    - error
+    - exceptions:
+        Property: true
+
+  "@typescript-eslint/no-magic-numbers":
+    - off
+    - ignoreArrayIndexes: true
+      ignore: [0, 1]
+
+  # disallow function declarations that contain unsafe references inside loop statements
+  no-loop-func:
+    - error
+
+  # disallow unnecessary nested blocks
+  no-lone-blocks:
+    - error
+
+  # disallow extending native types
+  no-extend-native:
+    - error
+
+  # disallow the use of `eval()`
+  no-eval:
+    - warn
+
+  # disallow `null` comparisons without type-checking operators
+  no-eq-null:
+    - error
+
+  # disallow unnecessary parentheses
+  no-extra-parens:
+    - error
+    - all
+    - conditionalAssign: false
+
+  # disallow the use of `arguments.caller` or `arguments.callee`
+  no-caller:
+    - error
+
+  # require `for-in` loops to include an `if` statement
+  guard-for-in:
+    - error
+
+  # require `return` statements to either always or never specify values
+  consistent-return:
+    - error
+    - treatUndefinedAsUnspecified:
+        true
+
+  # enforce `return` statements in callbacks of array methods
+  array-callback-return:
+    - warn
+
+  # enforce the use of variables within the scope they are defined
+  block-scoped-var:
+    - error
+
+  "@typescript-eslint/no-unused-vars":
+    - error
+    - vars: local
+      args: none
+      caughtErrors: none
+
+  "@typescript-eslint/indent":
+    - error
+    - 2
+    - SwitchCase: 1
+
+  linebreak-style:
+    - error
+    - unix
+
+  quotes:
+    - error
+    - single
+    - allowTemplateLiterals: true
+
+  "@typescript-eslint/semi":
+    - error
+    - never
+
+  "@typescript-eslint/no-constant-condition":
+    - off
+
+
+  # Detects variable[key] as a left- or right-hand assignment operand.
+  security/detect-object-injection:
+    - off
+
+
+overrides:
+  # template
+  - rules:
+      "@typescript-eslint/no-unused-vars":
+        - off
+      "@typescript-eslint/class-name-casing":
+        - off
+      "@typescript-eslint/no-empty-function":
+        - off
+    files:
+      - src/bookmakers/!template/*.ts
+      - src/bookmakers/!template/*.js
+
+  # tests
+  - rules:
+      "@typescript-eslint/no-magic-numbers":
+        - off
+    files:
+      - src/{**,}/*.test.js
+      - tests/{**,}/*.js

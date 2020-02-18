@@ -1,0 +1,83 @@
+scalar DateTime
+
+
+type Query {
+  leagues(ids: [Int!]): [League!]!
+  players: [Player!]!
+}
+
+
+type League {
+  id: Int!
+  title: String!
+  imageUrl: String!
+  matches: [Match!]!
+}
+
+type Match {
+  id: Int!
+  status: MatchStatus!
+  date: DateTime!
+  place: MatchPlace!
+  player1: Player
+  player2: Player
+
+  """Short series up to 11 or 21 points"""
+  games: [Result!]!
+
+  """Total results of all games during the match"""
+  result: Result
+}
+
+type Result {
+  player1: Int!
+  player2: Int!
+}
+
+enum MatchPlace {
+  BIG_SPORT_ROOM
+  SMALL_SPORT_ROOM
+  HALL
+}
+
+enum MatchStatus {
+  STATUS_NOT_STARTED
+  STATUS_PLAYING
+  STATUS_FINISHED
+  STATUS_CANCELLED
+}
+
+type Player {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  birthDate: DateTime!
+  age: Int!
+
+  heightInCm: Int!
+  weightInKg: Int!
+  position: String!
+  image: Image!
+}
+
+type Image {
+  large: String!
+  medium: String!
+  thumbnail: String!
+}
+
+
+type Mutation {
+  createMatch(leagueId: Int!, place: MatchPlace!, player1Id: Int!, player2Id: Int!): Match!
+  finishGame(matchId: Int!, games: [GameResult!]!): Match!
+}
+
+input GameResult {
+  player1: Int!
+  player2: Int!
+}
+
+
+type Subscription {
+  matchAffected: Match!
+}

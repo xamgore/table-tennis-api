@@ -1,0 +1,21 @@
+{
+  "schema": "./src/schema.ts",
+  "generates": {
+    "./src/graphql-types.ts": {
+      "plugins": [
+        {
+          "add": "/* eslint-disable */"
+        },
+        "typescript",
+        "typescript-resolvers"
+      ]
+    }
+  },
+  "config": {
+    "scalars": {
+      "DateTime": "Date"
+    },
+    "useIndexSignature": true,
+    "noSchemaStitching": true
+  }
+}
